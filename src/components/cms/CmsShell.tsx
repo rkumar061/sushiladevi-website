@@ -1,0 +1,11 @@
+import Link from "next/link";
+import { FileStack, Images, LayoutDashboard, KeyRound, UserRoundSearch, Users } from "lucide-react";
+import { requireCmsUser } from "@/cms/auth";
+import { LogoutButton } from "@/components/cms/LogoutButton";
+
+export const CmsShell: React.FC<{ children: React.ReactNode }> = async ({ children }) => {
+  const user = await requireCmsUser();
+  const adminLinks = [{ href: "/admin", label: "Dashboard", icon: LayoutDashboard }, { href: "/admin/content", label: "Content", icon: FileStack }, { href: "/admin/media", label: "Media", icon: Images }, { href: "/admin/users", label: "Users", icon: Users }];
+  const links = [...(user.role === "admin" ? adminLinks : []), { href: "/admin/leads", label: "Leads", icon: UserRoundSearch }, { href: "/admin/account", label: "Account", icon: KeyRound }];
+  return <div className="min-h-screen bg-[#f3f4ef] text-gray-950 lg:grid lg:grid-cols-[250px_1fr]"><aside className="bg-[#082f22] p-5 text-white lg:sticky lg:top-0 lg:h-screen"><Link href="/admin" className="block rounded-2xl border border-white/10 bg-white/5 p-4"><p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-300">Susheeladevi</p><p className="mt-1 text-lg font-black">Content Manager</p></Link><nav className="mt-6 space-y-1">{links.map(({ href, label, icon: Icon }) => <Link key={href} href={href} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold text-emerald-50 hover:bg-white/10"><Icon className="h-4 w-4" />{label}</Link>)}</nav><div className="mt-8 border-t border-white/10 pt-5"><p className="px-3 text-xs font-bold text-white">{user.name}</p><p className="mb-3 px-3 text-[10px] text-emerald-200">{user.email}</p><LogoutButton /></div></aside><div className="min-w-0"><header className="border-b bg-white px-5 py-4 lg:px-8"><p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-700">Secure administration</p></header>{user.mustChangePassword && <div className="border-b border-amber-200 bg-amber-50 px-5 py-3 text-sm font-semibold text-amber-900 lg:px-8">Change the temporary password before continuing. <Link href="/admin/account" className="font-black underline">Open account settings</Link></div>}<main className="p-5 lg:p-8">{children}</main></div></div>;
+};

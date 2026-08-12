@@ -1,0 +1,59 @@
+name: Deploy Sushiladevi Website (Main Branch)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, linux, x64, sushiladevi-website]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Sync Files to Target Directory (Preserving Database & Uploads)
+        run: |
+          APP_DIR="${{ vars.SUSHILADEVI_APP_DIR || '/home/rkumar/sushiladevi-website/app' }}"
+          mkdir -p "$APP_DIR"
+          rsync -avz \
+            --exclude='.git' \
+            --exclude='node_modules' \
+            --exclude='.next' \
+            --exclude='data' \
+            --exclude='storage' \
+            --exclude='backups' \
+            --exclude='.env*' \
+            ./ "$APP_DIR"/
+
+      - name: Ensure Persistent Directories
+        run: |
+          APP_DIR="${{ vars.SUSHILADEVI_APP_DIR || '/home/rkumar/sushiladevi-website/app' }}"
+          mkdir -p "$APP_DIR/data" "$APP_DIR/storage/uploads" "$APP_DIR/backups"
+
+      - name: Install Dependencies & Run Database Migrations
+        run: |
+          APP_DIR="${{ vars.SUSHILADEVI_APP_DIR || '/home/rkumar/sushiladevi-website/app' }}"
+          cd "$APP_DIR"
+          npm ci
+          npm run cms:migrate
+          npm run build
+
+      - name: Restart PM2 Application
+        run: |
+          APP_DIR="${{ vars.SUSHILADEVI_APP_DIR || '/home/rkumar/sushiladevi-website/app' }}"
+          PM2_NAME="${{ vars.SUSHILADEVI_PM2_APP_NAME || 'sushiladevi-website-main' }}"
+          APP_PORT="${{ vars.SUSHILADEVI_APP_PORT || '53460' }}"
+          cd "$APP_DIR"
+          export PORT="$APP_PORT"
+          export NODE_ENV="production"
+          pm2 describe "$PM2_NAME" >/dev/null 2>&1 && pm2 restart "$PM2_NAME" --update-env || pm2 start npm --name "$PM2_NAME" -- start
+          pm2 save
