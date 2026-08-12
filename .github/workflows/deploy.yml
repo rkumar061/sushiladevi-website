@@ -25,13 +25,14 @@ jobs:
           APP_DIR="${{ vars.SUSHILADEVI_APP_DIR || '/home/rkumar/sushiladevi-website/app' }}"
           mkdir -p "$APP_DIR"
           rsync -avz \
-            --exclude='.git' \
-            --exclude='node_modules' \
-            --exclude='.next' \
-            --exclude='data' \
-            --exclude='storage' \
-            --exclude='backups' \
-            --exclude='.env*' \
+            --exclude='/.git' \
+            --exclude='/node_modules' \
+            --exclude='/.next' \
+            --exclude='/.pnpm-store' \
+            --exclude='/data' \
+            --exclude='/storage' \
+            --exclude='/backups' \
+            --exclude='/.env*' \
             ./ "$APP_DIR"/
 
       - name: Ensure Persistent Directories
