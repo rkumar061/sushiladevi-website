@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { assertSameOrigin, getCurrentUser, isAdmin } from "@/cms/auth";
 import { ensureCmsInitialized } from "@/cms/initialize";
-import { listMedia, storeMedia } from "@/cms/media";
+import { humanizeFilename, listMedia, storeMedia } from "@/cms/media";
 import { writeAudit } from "@/cms/audit";
 
 export async function GET(request: Request) {
@@ -18,11 +18,27 @@ export async function POST(request: Request) {
     const user = await getCurrentUser();
     if (!isAdmin(user)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     const form = await request.formData();
-    const file = form.get("file");
-    if (!(file instanceof File)) return NextResponse.json({ error: "Choose a file to upload." }, { status: 400 });
-    const asset = await storeMedia(file, String(form.get("altText") || ""), String(form.get("caption") || ""), user.id);
-    await writeAudit({ userId: user.id, action: "media.uploaded", entityType: "media", entityId: asset.id, metadata: { name: asset.originalName, size: asset.size } });
-    return NextResponse.json({ asset }, { status: 201 });
+    const rawFiles = [...form.getAll("file"), ...form.getAll("files")].filter((f): f is File => f instanceof File && f.size > 0);
+    if (rawFiles.length === 0) return NextResponse.json({ error: "Choose at least one file to upload." }, { status: 400 });
+
+    const userAltText = String(form.get("altText") || "").trim();
+    const caption = String(form.get("caption") || "").trim();
+
+    const assets = [];
+    for (let i = 0; i < rawFiles.length; i++) {
+      const file = rawFiles[i];
+      let fileAltText = userAltText;
+      if (!fileAltText) {
+        fileAltText = humanizeFilename(file.name);
+      } else if (rawFiles.length > 1) {
+        fileAltText = `${userAltText} (${i + 1})`;
+      }
+      const asset = await storeMedia(file, fileAltText, caption, user.id);
+      await writeAudit({ userId: user.id, action: "media.uploaded", entityType: "media", entityId: asset.id, metadata: { name: asset.originalName, size: asset.size } });
+      assets.push(asset);
+    }
+
+    return NextResponse.json({ asset: assets[0], assets, count: assets.length }, { status: 201 });
   } catch (error) {
     const messages: Record<string, string> = {
       UNSUPPORTED_FILE_TYPE: "Only JPEG, PNG, WebP, AVIF, and PDF files are accepted.",
@@ -34,3 +50,4 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: messages[error instanceof Error ? error.message : ""] || "The file could not be uploaded." }, { status: 400 });
   }
 }
+

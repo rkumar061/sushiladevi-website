@@ -1,7 +1,7 @@
-"use me";
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useSiteContent } from "@/components/SiteContentProvider";
 import { ChevronDown, Menu, X } from "lucide-react";
@@ -75,19 +75,17 @@ export const Header: React.FC = () => {
             {/* Left Emblem Seal */}
             <div className="flex-shrink-0 flex items-center justify-center">
               <div
-                className={`rounded-full border-2 border-emerald-700 p-0.5 flex items-center justify-center bg-emerald-50 text-emerald-800 shadow-inner transition-all duration-500 ease-out ${
+                className={`rounded-full border-2 border-emerald-700 p-0.5 flex items-center justify-center bg-emerald-50 text-emerald-800 shadow-inner transition-all duration-500 ease-out overflow-hidden ${
                   isScrolled ? "w-9 h-9 sm:w-10 sm:h-10" : "w-14 h-14 sm:w-18 sm:h-18 md:w-20 md:h-20"
                 }`}
               >
-                <svg className="w-full h-full text-emerald-700" viewBox="0 0 100 100" fill="none">
-                  <circle cx="50" cy="50" r="46" stroke="currentColor" strokeWidth="2.5" fill="#f0fdf4" />
-                  <circle cx="50" cy="50" r="38" stroke="currentColor" strokeWidth="1" strokeDasharray="3 3" />
-                  <path d="M50 20 L50 80 M20 50 L80 50" stroke="currentColor" strokeWidth="1" opacity="0.4" />
-                  <path d="M35 55 C35 45 42 35 50 35 C58 35 65 45 65 55 Z" fill="currentColor" opacity="0.8" />
-                  <circle cx="50" cy="30" r="6" fill="currentColor" />
-                  <path d="M30 68 Q50 62 70 68" stroke="currentColor" strokeWidth="2" fill="none" />
-                  <text x="50" y="85" textAnchor="middle" fontSize="6.5" fontWeight="bold" fill="#047857">{institution.emblemName}</text>
-                </svg>
+                <Image
+                  src="/L_logo.jpg"
+                  alt={institution.emblemName || "Logo"}
+                  width={80}
+                  height={80}
+                  className="w-full h-full object-cover rounded-full"
+                />
               </div>
             </div>
 

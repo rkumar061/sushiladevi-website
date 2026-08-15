@@ -85,3 +85,10 @@ export function resolveMediaPath(storagePath: string) {
 }
 
 export const extensionFromName = (name: string) => extname(name).toLowerCase();
+
+export function humanizeFilename(filename: string): string {
+  const withoutExt = filename.replace(/\.[^/.]+$/, "");
+  const humanized = withoutExt.replace(/[-_]+/g, " ").trim();
+  return humanized || "Media file";
+}
+
