@@ -75,16 +75,17 @@ export const Header: React.FC = () => {
             {/* Left Emblem Seal */}
             <div className="flex-shrink-0 flex items-center justify-center">
               <div
-                className={`rounded-full border-2 border-emerald-700 p-0.5 flex items-center justify-center bg-emerald-50 text-emerald-800 shadow-inner transition-all duration-500 ease-out overflow-hidden ${
+                className={`flex items-center justify-center transition-all duration-500 ease-out ${
                   isScrolled ? "w-9 h-9 sm:w-10 sm:h-10" : "w-14 h-14 sm:w-18 sm:h-18 md:w-20 md:h-20"
                 }`}
               >
                 <Image
-                  src="/L_logo.jpg"
-                  alt={institution.emblemName || "Logo"}
-                  width={80}
-                  height={80}
-                  className="w-full h-full object-cover rounded-full"
+                  src="/L_logo.png"
+                  alt={institution.emblemName || "Arogya Yogpeeth Foundation Logo"}
+                  width={96}
+                  height={96}
+                  className="w-full h-full object-contain drop-shadow-sm"
+                  priority
                 />
               </div>
             </div>
@@ -115,17 +116,18 @@ export const Header: React.FC = () => {
             {/* Right Emblem Badge */}
             <div className="flex-shrink-0 flex items-center justify-center">
               <div
-                className={`rounded-full border-2 border-amber-500 p-0.5 flex items-center justify-center bg-amber-50 text-amber-900 shadow-sm transition-all duration-500 ease-out ${
+                className={`flex items-center justify-center transition-all duration-500 ease-out ${
                   isScrolled ? "w-9 h-9 sm:w-10 sm:h-10" : "w-14 h-14 sm:w-18 sm:h-18 md:w-20 md:h-20"
                 }`}
               >
-                <svg className="w-full h-full text-amber-700" viewBox="0 0 100 100" fill="none">
-                  <circle cx="50" cy="50" r="46" stroke="#d97706" strokeWidth="2.5" fill="#fffbeb" />
-                  <path d="M50 22 C38 22 28 35 28 50 C28 65 38 78 50 78 C62 78 72 65 72 50 C72 35 62 22 50 22 Z" fill="#fef3c7" stroke="#b45309" strokeWidth="1.5" />
-                  <circle cx="50" cy="42" r="10" fill="#d97706" />
-                  <path d="M36 65 Q50 55 64 65" stroke="#92400e" strokeWidth="3" fill="none" />
-                  <text x="50" y="86" textAnchor="middle" fontSize="6.5" fontWeight="bold" fill="#b45309">{institution.establishedLabel}</text>
-                </svg>
+                <Image
+                  src="/R_logo.png"
+                  alt="Susheeladevi College Logo"
+                  width={96}
+                  height={96}
+                  className="w-full h-full object-contain drop-shadow-sm"
+                  priority
+                />
               </div>
             </div>
           </div>
