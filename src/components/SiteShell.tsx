@@ -2,6 +2,7 @@ import React from "react";
 import { Header } from "@/components/Header";
 import { AdmissionBannerSection } from "@/components/AdmissionBannerSection";
 import { FooterSection } from "@/components/FooterSection";
+import { WhatsAppWidget } from "@/components/WhatsAppWidget";
 
 export const SiteShell: React.FC<{ children: React.ReactNode; showBottomCta?: boolean }> = ({
   children,
@@ -12,5 +13,6 @@ export const SiteShell: React.FC<{ children: React.ReactNode; showBottomCta?: bo
     {children}
     {showBottomCta && <AdmissionBannerSection />}
     <FooterSection />
+    <WhatsAppWidget />
   </main>
 );

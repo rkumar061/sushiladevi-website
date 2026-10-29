@@ -15,10 +15,29 @@ export default async function FacilitiesPage() {
   return (
     <SiteShell>
       <InnerPageHero content={page.hero} />
-      <section className="bg-[#f8f5eb] px-4 py-12 sm:px-6 lg:px-8">
-        <nav aria-label="Facility sections" className="mx-auto flex max-w-6xl flex-wrap justify-center gap-2">
-          {page.items.map((item) => <a key={item.id} href={`#${item.id}`} className="rounded-full border border-emerald-900/10 bg-white px-4 py-2 text-xs font-extrabold text-emerald-900 shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:text-white">{item.title}</a>)}
-        </nav>
+      <section className="bg-[#f8f5eb] px-4 py-10 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl space-y-6 text-center">
+          <div className="flex flex-wrap justify-center gap-3">
+            <a href="#academic" className="rounded-full bg-emerald-800 text-white px-5 py-2 text-xs font-black uppercase tracking-wider shadow-sm hover:bg-emerald-700 transition">
+              Academic Facilities
+            </a>
+            <a href="#hospital" className="rounded-full bg-emerald-600 text-white px-5 py-2 text-xs font-black uppercase tracking-wider shadow-sm hover:bg-emerald-500 transition">
+              Hospital Clinical Facilities
+            </a>
+          </div>
+
+          <nav aria-label="Facility sections" className="flex flex-wrap justify-center gap-2 pt-2">
+            {page.items.map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                className="rounded-full border border-emerald-900/10 bg-white px-3.5 py-1.5 text-xs font-extrabold text-emerald-900 shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:text-white"
+              >
+                {item.title}
+              </a>
+            ))}
+          </nav>
+        </div>
       </section>
 
       <section className="px-4 py-16 sm:px-6 sm:py-24 lg:px-8">

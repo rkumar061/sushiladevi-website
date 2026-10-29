@@ -16,7 +16,7 @@ export const contentCatalog: ContentCatalogGroup[] = [
   {
     label: "Global",
     description: "College identity, contact details, social links and default search metadata.",
-    items: [{ key: "global", label: "Global settings", description: "Manage institution-wide details used throughout the website." }],
+    items: [{ key: "global", label: "Global settings", description: "Manage institution-wide details, contact info, social links, WhatsApp widget and default search metadata." }],
   },
   {
     label: "Navigation",

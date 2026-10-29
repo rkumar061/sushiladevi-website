@@ -5,6 +5,10 @@ import { FeatureGrid, InnerPageHero, SectionHeading } from "@/components/PagePri
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { loadSiteContent } from "@/cms/public-content";
 
+import { EligibilityCriteriaSection } from "@/components/EligibilityCriteriaSection";
+import { AdmissionCtaSection } from "@/components/AdmissionCtaSection";
+import { DownloadProspectusSection } from "@/components/DownloadProspectusSection";
+
 export async function generateMetadata() { return createPageMetadata((await loadSiteContent()).pages.bnys.seo); }
 
 export default async function BnysPage() {
@@ -22,6 +26,11 @@ export default async function BnysPage() {
         </div>
       </section>
 
+      {/* BNYS Admission Banner CTA */}
+      <ScrollReveal direction="scale">
+        <AdmissionCtaSection />
+      </ScrollReveal>
+
       <section className="px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <SectionHeading {...page.sections.subjects} />
@@ -30,6 +39,11 @@ export default async function BnysPage() {
           </div>
         </div>
       </section>
+
+      {/* Detailed Eligibility Criteria Component */}
+      <ScrollReveal direction="left">
+        <EligibilityCriteriaSection />
+      </ScrollReveal>
 
       <section className="bg-[#123b2a] px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
         <div className="mx-auto max-w-6xl">
@@ -51,6 +65,11 @@ export default async function BnysPage() {
           <FeatureGrid cards={page.careers} />
         </div>
       </section>
+
+      {/* Download Prospectus CTA */}
+      <ScrollReveal direction="right">
+        <DownloadProspectusSection />
+      </ScrollReveal>
 
       <ScrollReveal direction="scale">
         <section className="bg-[#f8f5eb] px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
